@@ -1,0 +1,42 @@
+---
+layout: post
+title:  "Vetores"
+date:   2015-05-11 00:00
+categories: estruturas-de-dados
+---
+
+Um vetor é uma estrutura de dados linear e estática. Pode ser usada para guardar um número fixo de valores, como por exemplo no caso de registradores de uma arquitetura computacional, ou em um sistema que controle o número de posições ocupadas em um brinquedo em um parque. Vetores são usados em casos onde lidamos com um número conhecido de possibilidades e desejamos simplicidade. Abaixo é exibido um exemplo de vetor na linguagem C.
+
+<script src="https://gist.github.com/Rodrigo-Vargas/f9497c295308da77e79d.js"></script>
+
+Neste exemplo, temos um vetor fixo de 5 posições. Se quiseremos acessar o elemento na 3 posição, podemos simplesmente escrever no código:
+
+<pre>printf(“%d”, vetor[2]);</pre>
+
+Note que neste caso, não utilizamos mais o caractere ‘&’ na váriavel escrita no printf. Em C, quando lidamos com vetores, lidamos com posições de memória, assim quando escrevemos em nosso código vetor[2], estamos nos referindo a posição de memória que ocupa o 3 inteiro da variavel vetor. Para visualizar melhor isso, execute o código abaixo:
+
+<script src="https://gist.github.com/Rodrigo-Vargas/671e12fc28223e0ac4a7.js"></script>
+
+Ao executarmos ele, a saída fornecida é:
+
+<pre>
+Posicao 0x601040 
+Posicao 0x601044 
+Posicao 0x601048 
+Posicao 0x60104c 
+Posicao 0x601050 
+</pre>
+
+Note que a cada posição temos um incremento de 4 bits no valor do hexadecimal. Isto porque um inteiro ocupa 4 bits de memória, e quando declaramos nosso vetor, reservamos em memória 5 espaços de memória para inteiros. Agora que sabemos disso podemos escrever nosso for de outra maneira, com a função "percorreVetorPeloEndereco":
+
+<script src="https://gist.github.com/Rodrigo-Vargas/906d7ca321d6437d449f.js"></script>
+
+Na linha 7, iniciamos a váriavel ponteiro, com o endereço de memória da primeira posição do vetor. Dentro do for simplesmente, fazemos o incremento do ptr em unidades. Na primeira iteração, onde o i é zero, o ponteiro aponta para a posição inicial do array. Na segunda interação o ponteiro é incrementado em uma unidade(no caso, 4 bytes), e irá apontar para a segunda posição do array e assim sucessivamente.
+
+Como uma última observação, é importante notar que sempre temos que conhecer o tamanho do nosso vetor, e o início dele em memória. No caso, 5 é o tamanho do vetor e a posição inicial dele é guardava na váriavel declarada, no caso do exemplo vetor. Assim como fizemos que o nosso ponteiro recebesse o endereço de memória de vetor na posição 0(ptr = &vetor[0]), também poderíamos ter escrito:
+
+<pre>ptr = vetor;</pre>
+
+Pois a declaração de um vetor em C sempre se baseia pelo ínicio do vetor. 
+
+Por hoje era isso pessoal, dúvidas sugestões abaixo e se quiser fazer fork do código do exemplo no github é só clicar neste link. Até a próoxima.

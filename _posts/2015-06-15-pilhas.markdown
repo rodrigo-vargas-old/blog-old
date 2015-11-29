@@ -1,0 +1,107 @@
+---
+layout: post
+title:  "Pilhas"
+date:   2015-06-15 00:00
+categories: estrutura-de-dados
+---
+
+Continuando a série sobre estrutura de dados, vamos implementar o conceito de pilha. Basicamente uma pilha é uma estrutura de dados com o conceito Last In First Out(LIFO). Neste tipo de estrutura, temos o conceito de topo, que é aonde os dados são inseridos e retirados. Por isso que o último elemento a entrar na estrutura é o primeiro a sair. Não se permite por exemplo, iniciar a leitura ou fazer uma remoção de elementos usando o meio da estrutura ou a base. Abaixo, apresento os método básicos nessa estrutura, inserção, remoção e leitura.
+
+## Inserção
+
+Antes de apresentar o método de inserção, irei apresentar a estrutura base da pilha.
+
+<pre>
+struct elem{
+  elemento *up;
+  char valor[10];
+  elemento *down;
+};
+</pre>
+
+Nesta estrutura, temos o valor do elemento, e mais duas posições para guardar as informações dos elementos que estão imediatamente acima e abaixo do elemento. Lembrando que sempre o down da base da pilha será nulo, e poderá ser usado como condição de fim de leitura. Agora o método de inserção propriamente dito:
+
+<pre>
+elemento* insere(char *valor, elemento *topoPilha)
+{
+  elemento *novo;
+  novo = malloc(sizeof(elemento));
+
+  strcpy(novo->valor, valor);
+
+  if (topoPilha != NULL)
+  {
+    topoPilha->up = novo;
+    novo->down = topoPilha;
+  }
+
+  return novo;
+}
+</pre>
+
+Primeiramente fizemos a alocação de memória para o novo elemento, seguido da cópia do valor passado para o campo valor do novo elemento. Caso a pilha esteja vazia, fizemos o link com o elemento topo existente. Ao final, retornamos o valor do novo topo. Para testar essa função fiz o seguinte método.
+
+<pre>
+void testaInsere()
+{
+  topo = insere("Celta", topo);
+  topo = insere("Onix", topo);
+  topo = insere("Cruze", topo);
+
+  listaElementos(topo);
+}
+</pre>
+
+Note que sempre atualizo o valor do topo, que é uma váriavel global, com o valor do novo topo. Ao final chamo a função listaElementos, descrita a seguir.
+
+## Lista Elementos
+
+<pre>void listaElementos(elemento *topoPilha)
+{
+  elemento *aux;
+
+  aux = topoPilha;
+
+  while(aux != NULL)
+  {
+    printf("%s\n", aux->valor);
+    aux = aux->down;
+  }
+}
+</pre>
+
+Explicando rapidamente esta função, temos um ponteiro auxiliar que irá iterar sobre a pilha, começando do topo até chegar na base, onde o valor de aux->down será nulo.
+
+## Remove Elemento
+
+<pre>
+elemento* removeElemento(elemento *topoPilha)
+{
+  elemento *aux;
+
+  aux = topoPilha->down;
+  aux->up = NULL;
+
+  free(topoPilha);
+
+  return aux;
+}
+</pre>
+
+A função remove elemento, irá primeiramente guardar numa váriavel auxiliar o novoTopo, liberar a posição de memória do topo antigo, e retirar o vínculo do novoTopo com o topo antigo, que é feito através do campo up. Abaixo o método usado para testar esta função.
+
+<pre>
+void testaRemove()
+{
+  topo = insere("Celta", topo);
+  topo = insere("Onix", topo);
+  topo = insere("Cruze", topo);
+
+  listaElementos(topo);
+
+  topo = removeElemento(topo);
+  listaElementos(topo); 
+}
+</pre>
+
+Por hoje era isso pessoal, críticas e sugestões abaixo nos comentários. Até a próxima.

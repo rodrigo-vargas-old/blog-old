@@ -1,0 +1,192 @@
+---
+layout: post
+title:  "Grafos"
+date:   2015-06-29 00:00
+categories: estruturas-de-dados
+---
+
+No post de hoje, iremos falar sobre a estrutura de dados grafo. Um grafo é composto de vértices(ou nodos) e arestas. Cada aresta faz a ligação entre dois nodos. Esta aresta pode ser em um único sentido ou em duplo sentido.
+
+## Implementação em C
+
+Semelhante a implementação usada nas árvores genéricas, teremos uma struct que representará o vértice, chamado “graph”. E outra struct, chamada “edgeList”, que conterá as arestas de “graph”. “edgeList” 
+
+<pre>
+typedef struct graph graph;
+typedef struct edgeList edgeList;
+
+struct graph {
+  char *name;
+  edgeList *edges;
+};
+
+struct edgeList {
+  graph *element;
+  edgeList *next;
+};
+</pre>
+
+## Inserindo novos vértices no grafo
+
+Para inserir novos vértices, implentaremos a função “newGraph”. 
+
+<pre>
+graph* newGraph(char *name)
+{
+  graph *newGraph = malloc(sizeof(graph));
+
+  newGraph->name = name;
+
+  return newGraph;
+}
+</pre>
+
+Aqui sem surpresas, apenas a alocação de um ponteiro do tipo “graph”, atribuição do valor e o retorno do mesmo para a função chamadora.
+
+## Conectando vértices com arestas
+
+Como dito anteriormente, dois vértices se ligam através de um vértice. Este pode ligar os vértices em único sentido ou em ambos os sentidos. Abaixo, a implementação da função “newEdge”.
+
+<pre>
+void newEdge(graph *g1, graph *g2, int isTwoWay)
+{
+  edgeList *newEdg = malloc(sizeof(edgeList));
+  newEdg->element = g2;
+  
+  if (g1->edges == NULL)
+  {
+    g1->edges = newEdg;
+  }
+  else
+  {
+    edgeList *aux;
+
+    aux = g1->edges;
+
+    while(aux->next != NULL)
+    {
+      aux = aux->next;
+    }
+
+    aux->next = newEdg;
+  }
+
+  if (isTwoWay == 1)
+    newEdge(g2, g1, 0);
+}
+</pre>
+
+A idéia aqui é inserir um novo elemento na edgeList do vértice. Caso o parametro isTwoWay for 1, o que representa verdadeiro, repetimos a operação no sentido contrário, também atribuindo uma nova aresta para o vértice g2. Para testar esta função usaremos a próxima função, que mostra todos as arestas do vértice.
+
+<pre>
+void showEdges(graph *g1)
+{
+  printf("Arestas do nodo %s\n", g1->name);
+
+  edgeList *aux = g1->edges;
+
+  while(aux != NULL)
+  {
+    printf("   %s\n", aux->element->name);
+    aux = aux->next;
+  }
+}
+</pre>
+
+Aqui, apenas fizemos uma iteração na edgeList do vértice passado. Abaixo uma função de testes que comprova o funcionamento correto da função:
+
+<pre>
+void testNewEdge()
+{
+  graph *g1 = newGraph("Rodrigo");
+  graph *g2 = newGraph("Gustavo");
+
+  newEdge(g1, g2, 0);
+
+  showEdges(g1);
+  showEdges(g2);
+}
+</pre>
+
+## Deletando arestas e vértices
+
+As duas últimas funções que abordaremos hoje, tratam a respeito da exclusão de vértices e arestas. Primeiramente, veremos a “deleteEdge”, responsável por deletar arestas.
+
+<pre>
+void deleteEdge(graph *g1, graph *g2, int isTwoWay)
+{
+  edgeList *aux = g1->edges;
+  edgeList *prev = NULL;
+
+  while (aux != NULL)
+  {
+    if (aux->element == g2)
+    {
+      printf("Achou \n");
+      if (prev == NULL)
+      {
+        if (aux->next == NULL)
+          g1->edges = NULL;
+        else
+          g1->edges = aux->next;
+      }
+      else
+      {
+        if (aux->next == NULL)
+          prev->next = NULL;
+        else
+          prev->next = aux->next;
+      }
+
+      free(aux);
+
+      break;
+    }
+  }
+
+  if (isTwoWay == 1)
+    deleteEdge(g2, g1, 0);
+}
+</pre>
+
+Aqui, fizemos a localização do vértice g2 na edgeList de g1. Após localizar, fizemos as operações para garantir que o encadeamento da lista não seja quebrado. Abaixo uma função para testar isto:
+
+<pre>
+void testDeleteEdge()
+{
+  graph *g1 = newGraph("Rodrigo");
+  graph *g2 = newGraph("Gustavo");
+
+  newEdge(g1, g2, 1);
+
+  showEdges(g1);
+  showEdges(g2);
+
+  printf("Depois da exclusao \n \n");
+
+  deleteEdge(g1, g2, 0);
+  showEdges(g1);
+  showEdges(g2);
+}
+</pre>
+
+Após implementada a função de exclusão de arestas, podemos implementar a função de exclusão de arestas.
+
+<pre>
+void deleteGraph(graph *grphToDelete)
+{
+  edgeList *aux = grphToDelete->edges;
+
+  while (aux != NULL)
+  {
+    deleteEdge(grphToDelete, aux->element, 1);
+    aux = aux->next;
+  }
+
+  free(grphToDelete);
+}
+</pre>
+
+Aqui, temos que ter o cuidado de limpar as arestas em ambos os sentidos, para que não fique termos orfãos em memória ou arestas apontando para um vértice inexistente.
+
+Por hoje era isso pessoal, dúvidas, críticas e sugestões nos comentários abaixo e até a próxima.

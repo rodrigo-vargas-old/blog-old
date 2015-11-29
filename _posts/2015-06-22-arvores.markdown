@@ -1,0 +1,231 @@
+---
+layout: post
+title:  "Árvores"
+date:   2015-06-22 00:00
+categories: estrutura-de-dados
+---
+
+Árvores são estruturas de dados onde seus dados estão dispostos de forma que temos uma estrutura com diferentes níveis. Onde cada nível, possui n níveis abaixo do mesmo. Desta forma árvores são excelentes estruturas para representar hierarquias, como por exemplo, a hierarquia de diretórios da sua máquina.
+
+## Conceitos Importantes
+
+As árvores tem alguns conceitos importantes, que são:
+
+
+* raiz: nodo onde se origina outros nodos, ou sub-arvores.
+* sub-arvore: um nodo filho que contém outros nodos filho.
+* nodo folha: um nódo que não possui nodos filho.
+
+
+## Árvores Binárias
+
+As árvores podem ser divididas basicamente em dois tipos: árvores binárias e árvores genéricas. As árvores binárias são especialmente interessante por representarem expressões lógicas.
+
+## Implementação em C
+
+Implementaremos agora uma árvore binária em C. Iremos implementar uma árvore utilizando dois métodos. O método inicializa que irá retornar uma árvore vazia, e o método cria que criará uma nova árvore. Eis o método inicializa:
+
+<pre>
+arv* inicializa()
+{
+  return NULL;
+}
+</pre>
+
+E o método cria:
+<pre>
+arv* cria(int valor, arv *esquerda, arv *direita)
+{
+  arv *novo = malloc(sizeof(arv));
+
+  novo->valor = valor;
+  novo->esquerda = esquerda;
+  novo->direita = direita;
+
+  return novo;
+}
+</pre>
+
+Como podemos ver, temos uma solução bastante simples para a implementação da árvore, onde a construimos subarvores a partir dos nodos folha, e vamos passando a referências dessas sub-arvores, para o nodo raiz das mesmas. Deste modo para construirmos a árvore abaixo, teremos o seguinte o código:
+
+<pre>
+           1
+         /    \
+            2   3
+  /    \
+      5     6
+</pre>
+<pre>
+void testaCriaArvore()
+{
+  /* Build a follow tree: */
+  /*
+          1
+         / \
+    2   3
+    /  \
+     5  6
+
+  */
+
+    arv *a5 = cria(5, inicializa(), inicializa());
+    arv *a6 = cria(6, inicializa(), inicializa());
+    arv *a2 = cria(2, a5, a6);
+
+  arv *a3 = cria(3, inicializa(), inicializa());
+
+  arv *a1 = cria(1, a2, a3);
+}
+</pre>
+
+Para testarmos o funcionamento da árvore, implementaremos um método para fazer a varredura da mesma recursivamente.
+
+<pre>
+void leArvore(arv *raiz, int nivel)
+{
+  if (raiz != NULL)
+  {
+    int x;
+    for(x = 0; x <= nivel*3; x++)
+      printf(" ");
+
+    printf("%i\n", raiz->valor);
+    leArvore(raiz->esquerda, nivel + 1);
+    leArvore(raiz->direita, nivel + 1);
+  }
+}
+</pre>
+
+Passamos como parâmetro o nodo raiz da árvore na sua primeira chamada, e o valor 0 para nível. Para representar que estamos no nível mais alto da árvore. Na sua primeira chamada, a função leArvore irá imprimir o nodo solicitado, se o mesmo não for nulo. E irá chamar a mesma função para fazer a leitura dos nodos filhos, e assim sucessivamente até todos os nodos serem impressos. A saída desta função ficará:
+
+<pre>
+ 1
+    2
+       5
+       6
+    3
+</pre>
+
+O próximo método que devemos implementar, é a operação de exclusão.
+
+<pre>
+arv* exclui(arv *alvo)
+{
+  if (alvo != NULL)
+  {
+    exclui(alvo->esquerda);
+    exclui(alvo->direita);
+    free(alvo);
+  }
+  return NULL;
+}
+</pre>
+
+Neste método testamos se o nodo em questão não for nulo, fazemos a varredura de suas subarvores, visto que depois que liberarmos o nodo em questão, não teremos mais acesso aos dados que estão abaixo dele hierarquicamente. Então, após nos certificarmos que as subarvores deste nodo foram exclúidas, excluimos o nodo em questão e retornamos NULL para representar um endereço de memória não mais alocado. Ainda temos que ter cuidado de caso o nodo que foi eliminado seja referenciado por algum outro nodo, limparmos esta referencia, como feito na função de teste abaixo:
+
+<pre>
+void testaExcluiNodo()
+{
+  arv *a5 = cria(5, inicializa(), inicializa());
+    arv *a6 = cria(6, inicializa(), inicializa());
+    arv *a2 = cria(2, a5, a6);
+
+  arv *a3 = cria(3, inicializa(), inicializa());
+
+  arv *a1 = cria(1, a2, a3);
+
+  printf("Árvore antiga \n");
+  leArvore(a1, 0);
+
+  printf("Novo arvore \n");
+
+  a1->esquerda = exclui(a2);
+  leArvore(a1, 0);
+}
+</pre>
+
+Outro conceito importante, é a altura da arvore. Definimos a altura da árvore como a distancia em nodos entre a raiz e o elemento folha da maior subarvore da raiz. Caso a árvore possua apenas o nodo raiz, a sua altura será zero. E caso seja uma arvore vazia, a sua altura é -1. Abaixo implementamos uma função que retorna a altura da árvore.
+
+<pre>
+int altura(arv *raiz)
+{
+  if (raiz == NULL)
+    return -1;
+  
+  if (raiz->esquerda == NULL && raiz->direita == NULL)
+    return 0;
+  else
+    return checkAltura(raiz, -1); 
+}
+</pre>
+
+<pre>
+int checkAltura(arv *a, int nivel)
+{
+  if (a != NULL)
+  {
+    nivel++;
+    int nivelEsquerdo = checkAltura(a->esquerda, nivel);
+    int nivelDireito = checkAltura(a->direita, nivel);
+
+    if (nivelEsquerdo > nivelDireito)
+      nivel = nivelEsquerdo;
+    else
+      nivel = nivelDireito;
+  }
+  
+  return nivel;
+}
+</pre>
+
+Nó método altura, verificamos inicialmente, se a árvore não satisfaz as condições de ser vazia, ou de não possui subarvores. Após, chamamos a função checkAltura, que irá percorrer a árvore até o ponto mais baixo, que definirá sua altura.
+
+O último tópico que cobriremos é a respeito da leitura da árvore, que pode ser feita de 3 modos:
+
+* pré-ordem: trata raiz, percorre a sub arvore esquerda (sae) e percorre sub-arvore direita (sad); 
+* ordem simétrica: percorre sae, trata raiz, percorre sad; 
+* pós-ordem: percorre sae, percorre sad, trata raiz.
+
+
+Implementaremos este 3 métodos:
+
+<pre>
+void imprimePreOrdem(arv *elemento)
+{
+  /* Trata raiz, percorre (sae) e percorre  (sad); */
+  if (elemento == NULL)
+    return;
+
+  printf("%i\n", elemento->valor);
+  imprimePreOrdem(elemento->esquerda);
+  imprimePreOrdem(elemento->direita);
+}
+</pre>
+
+<pre>
+void imprimeOrdemSimetrica(arv *elemento)
+{
+  /* percorre sae, trata raiz, percorre sad; */
+  if (elemento == NULL)
+    return;
+
+  imprimeOrdemSimetrica(elemento->esquerda);
+  printf("%i\n", elemento->valor);
+  imprimeOrdemSimetrica(elemento->direita);
+}
+</pre>
+
+<pre>
+void imprimePosOrdem(arv *elemento)
+{
+  /* percorre sae, percorre sad, trata raiz. */
+  if (elemento == NULL)
+    return;
+
+  imprimePosOrdem(elemento->esquerda);
+  imprimePosOrdem(elemento->direita);
+  printf("%i\n", elemento->valor);
+}
+</pre>
+
+Como podemos observar, a única variação que temos, é realmente na ordem da impressão. Por hoje era isso pessoal, dúvidas sugestões e comentários aqui embaixo e no próximo post iremos finalizar esta parte de árvores, falando sobre as árvores genéricas, até lá.

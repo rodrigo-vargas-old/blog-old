@@ -1,0 +1,49 @@
+---
+layout: post
+title:  "Matrizes"
+date:   2015-05-18 00:00
+categories: estruturas-de-dados
+---
+
+Neste post vamos falar sobre outro tipo de estrutura de dados, as matrizes. Em C podemos definir uma matriz de inteiros como:
+
+<pre>int matriz [3][3];</pre>
+
+Neste exemplo, a matriz tem 3 linhas e 3 colunas. Vamos agora fazer um programa simples em C que leia esta matriz. Começaremos, fazendo a declaração da mesma e já carregando alguns dados nela, desta forma:
+
+<pre>int matriz[3][3] = { {1,2,3}, {4,5,6}, {7,8,9} }; </pre>
+
+Cada grupo de colchetes dentro do colchete de fora, representa uma linha. E cada número dentro desse colchete, é um valor da coluna. Agora vamos criar o nosso método para ler os dados desta matriz:
+
+<script src="https://gist.github.com/Rodrigo-Vargas/16aa31385dafae059adb.js"></script>
+
+Para fazer a leitura da matriz, usamos um for dentro de outro for. O for externo fará a leitura das linhas, enquanto o for que está dentro deste irá ler as colunas da linha que estiver sendo lida na iteração.
+
+## Matrizes multi-dimensionais
+
+Matrizes multidimensionais são matrizes que podem assumir até n dimensões. Como por exemplo:
+
+<pre>int matriz[3][3][3];</pre>
+
+Este tipo de matriz não é frequentemente usada, pois esta matriz rapidamente alcança grande dimensões, precisando de bastante poder computacional para fazer uma varredura na mesma.
+
+Como exemplo, iremos fazer uma matriz multidimensional de char. Declarando a deste modo:
+
+<Pre>char matrizMulti[3][3][13] = {   {"Chevrolet", "Volkswagen", "Fiat"},
+            {"Basico", "Intermediario", "Completo"}, 
+            {"Preto", "Branco", "Cinza"}
+          };
+</pre>
+
+Repare que como no exemplo anterior, temos apenas 3 grupos de 3 elementos. Porém, como estamos trabalhando com c, onde uma string é um vetor do tipo ‘char’, a mesma acaba representando mais uma dimensão na matriz. Assim temos o terceiro grupo da nossa matriz multidimensional. Abaixo é mostrada a função que imprime esta matriz e a saída correspondente:
+
+<script src="https://gist.github.com/Rodrigo-Vargas/27d39291b12ae5128acb.js"></script>
+
+Saida:
+<pre>
+Chevrolet Volkswagen Fiat 
+Basico Intermediario Completo 
+Preto Branco Cinza 
+</pre>
+
+Por hoje era isso pessoal, dúvidas e sugestões aqui embaixo e um grande abraço.

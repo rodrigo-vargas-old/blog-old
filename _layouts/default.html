@@ -4,21 +4,39 @@
   {% include head.html %}
 
   <body>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-xs-2">
-          <div id="side-bar">
-            {% include sidebar.html %}
-          </div>
-        </div>
-
-        <div class="col-xs-offset-2 col-xs-10">
-          <div id="content">
-            {{ content }}
-          </div>
-        </div>
-      </div>
+    <div id="container-menu" class="visible-xs-block">
+      <a><i class="glyphicon glyphicon-menu-hamburger"></i></a>
     </div>
+    <div id="side-bar">
+      {% include sidebar.html %}
+    </div>
+          
+    <div id="content">
+      {{ content }}
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+    <script type="text/javascript">
+      window.RodrigoVg = window.RodrigoVg || {}
+      RodrigoVg.RegisterToogleMenu = function() {
+        $("#container-menu a").click(function(){
+          if ($("#side-bar").hasClass("visible"))
+          {
+            $("#side-bar").removeClass("visible");
+            $("#content").removeClass("menu-visible");
+          }
+          else
+          {
+            $("#side-bar").addClass("visible");
+            $("#content").addClass("menu-visible");
+          }
+        });
+      }
+
+      RodrigoVg.RegisterToogleMenu();
+    </script>
+          
   </body>
 
 </html>

@@ -1,0 +1,160 @@
+body,a, a:hover {
+  color: green;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Reset */
+ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+#header {
+  background-color: #fff;
+  border-bottom: 1px solid #e1e1e1;
+  padding: 10px 0 0 0;
+  z-index: 1030;
+}
+
+  #header .logo {
+    font-size: 24px;    
+    line-height: 30px;
+  }
+
+  #header .logo span {
+    display: block;    
+    margin-left: 20px;
+    vertical-align: middle;
+  }
+
+  #header nav {
+    line-height: 30px;
+  }
+
+  #header nav ul{
+    vertical-align: middle;
+    list-style: none;
+  }
+
+.nav-fixed {
+  left: 0;
+  position: fixed;
+  right: 0;
+}
+
+.nav-item {
+  display: inline-block;
+}
+
+.nav-item a {
+  display: block;
+  padding: 5px 20px;
+  border-bottom: 2px solid #fff;
+}
+.nav-item a:hover {
+  border-bottom: 2px solid green;
+}
+
+#section-home{
+  background-color: #36465D;
+  margin-top: 60px;
+}
+
+.gray-mask {
+  background-color: rgba(0,0,0, 0.4);
+}
+
+.title-logo-company {
+  border: 1px solid green;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#social-media {
+  margin: 100px auto;
+  width: 480px
+}
+
+.social-btn {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 5px;
+  border: 2px solid green;
+  display: inline-block;
+  font-weight: 700;
+  margin: 0 10px;
+  padding: 10px 10px;
+}
+
+.social-btn:hover {
+  color: #fff;
+  background-color: green;
+}
+
+.background-section {
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+#section-about {
+  background-image: url("https://41.media.tumblr.com/8606cb8e8c36ab0341dde429562a0dfc/tumblr_nw6oxkfigM1rrohfco1_1280.jpg");
+  color: #000;
+  font-size: 24px;
+  height: 1000px;
+  padding-top: 50px;
+}
+
+#container-img-avatar img {
+  border: 2px solid green;
+  border-radius: 50%;
+}
+
+.white-box {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+  border: 1px solid green;
+  margin-top: 150px;
+  margin-bottom: 150px;
+  padding: 50px;
+}
+
+.highligthed {
+  color: green;
+  font-size: 36px;
+  margin-left: 5px;
+}
+
+/* Portfolio*/
+
+#section-portfolio {
+  background-image: url("https://40.media.tumblr.com/667682ff791a36a607113e4963dbf489/tumblr_nxa441AQVZ1s3ocr1o1_1280.jpg");
+}
+
+.portfolio-item {
+  margin-bottom: 25px;
+}
+
+.portfolio-item:hover {
+  box-shadow: 5px 5px 10px #000;
+}
+
+.portfolio-image {
+  border-radius: 5px;
+  border: 1px solid green;
+  padding: 2px;
+}
+
+.portfolio-image img {
+  border-radius: 5px;
+  max-width: 100%;
+}
+
+.portfolio-name {
+  text-align: center;
+}

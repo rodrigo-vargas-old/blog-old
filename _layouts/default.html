@@ -19,7 +19,7 @@
 
     <script type="text/javascript">
       window.RodrigoVg = window.RodrigoVg || {}
-      RodrigoVg.RegisterToogleMenu = function() {
+      RodrigoVg.registerToogleMenu = function() {
         $("#container-menu a").click(function(){
           if ($("#side-bar").hasClass("visible"))
           {
@@ -34,7 +34,18 @@
         });
       }
 
-      RodrigoVg.RegisterToogleMenu();
+      RodrigoVg.setActiveLink = function()
+      {
+        if (window.location.pathname.substr(0,5) == "/work")
+          $("#portfolio").addClass("active");
+        else if (window.location.pathname.substr(0,5) == "/blog")
+          $("#blog").addClass("active");
+        else
+          $("#about").addClass("active");
+      }
+
+      RodrigoVg.registerToogleMenu();
+      RodrigoVg.setActiveLink();
     </script>
           
   </body>

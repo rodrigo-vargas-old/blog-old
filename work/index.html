@@ -1,0 +1,23 @@
+---
+layout: default
+---
+<div class="row">
+  {% for work in site.categories['work'] %}  
+    <div class="col-xs-6">
+      <div class="work-container">
+        <div class="work-wrapper">
+          <div class="row">
+            <h1 class="work-title col-xs-11">{{ work.title }}</h1>
+            <a href="{{work.url}}" target="_blank" class="work-link col-xs-1"><i class="glyphicon glyphicon-link"></i></a>
+          </div>
+          <div class="img-responsive">
+            <img src="{{ work.image_url }}" alt="">
+          </div>
+          {{ work.content }} 
+
+          <a href="{{ work.source_url }}" target="_blank">Source</a>
+        </div> 
+      </div>
+    </div>
+  {% endfor %}
+</div>
